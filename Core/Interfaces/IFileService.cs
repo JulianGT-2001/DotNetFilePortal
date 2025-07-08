@@ -5,5 +5,5 @@ public interface IFileService
 {
     Task RegisterFileAsync(File file);
     Task<IEnumerable<File>> GetFilesAsync();
-    Task<File?> GetFileAsync();
+    Task<File?> GetFileAsync(Guid id);
 }
