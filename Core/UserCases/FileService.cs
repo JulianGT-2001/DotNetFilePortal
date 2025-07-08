@@ -1,5 +1,6 @@
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace Core.UserCases;
 
@@ -15,7 +16,7 @@ public class FileService : IFileService
     }
     #endregion
     #region methods
-    public async Task RegisterFileAsync(FileEntity file)
+    public async Task RegisterFileAsync(IFormFileCollection files, string userId)
     {
         throw new NotImplementedException();
     }
