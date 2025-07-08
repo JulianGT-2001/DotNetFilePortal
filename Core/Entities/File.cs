@@ -2,7 +2,7 @@ namespace Core.Entities;
 
 public class File
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string OriginalName { get; set; } = default!;
     public string Path { get; set; } = default!;
     public long SizeInBytes { get; set; }
