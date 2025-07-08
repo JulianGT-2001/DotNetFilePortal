@@ -1,6 +1,6 @@
+using Core.Entities;
 namespace Core.Interfaces;
 
-using Core.Entities;
 
 public interface IFileRepository
 {
