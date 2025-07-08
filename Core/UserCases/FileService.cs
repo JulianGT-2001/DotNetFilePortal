@@ -1,3 +1,6 @@
+using Core.Entities;
+using Core.Interfaces;
+
 namespace Core.UserCases;
 
 public class FileService : IFileService
@@ -12,17 +15,17 @@ public class FileService : IFileService
     }
     #endregion
     #region methods
-    public async Task RegisterFileAsync(File file)
+    public async Task RegisterFileAsync(FileEntity file)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<File>> GetFilesAsync()
+    public Task<IEnumerable<FileEntity>> GetFilesAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<File> GetFileAsync(Guid id)
+    public Task<FileEntity> GetFileAsync(Guid id)
     {
         throw new NotImplementedException();
     }

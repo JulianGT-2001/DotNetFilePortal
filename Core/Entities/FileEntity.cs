@@ -1,6 +1,6 @@
 namespace Core.Entities;
 
-public class File
+public class FileEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string OriginalName { get; set; } = default!;

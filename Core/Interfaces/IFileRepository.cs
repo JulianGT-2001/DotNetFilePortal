@@ -1,9 +1,11 @@
+using Core.Entities;
+
 namespace Core.Interfaces;
 
 
 public interface IFileRepository
 {
-    Task AddFileAsync(File file);
-    Task<IEnumerable<File>> GetAllFilesAsync();
-    Task<File?> GetFileByIdAsync(Guid id);
+    Task AddFileAsync(FileEntity file);
+    Task<IEnumerable<FileEntity>> GetAllFilesAsync();
+    Task<FileEntity?> GetFileByIdAsync(Guid id);
 }
