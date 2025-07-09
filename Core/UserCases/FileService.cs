@@ -3,6 +3,7 @@ using Core.Entities.Dto;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 
 namespace Core.UserCases;
 
@@ -87,6 +88,21 @@ public class FileService : IFileService
             ContentType = file.MimeType,
             OriginalName = file.OriginalName
         };
+    }
+
+    public async Task DeleteFileAsync(Guid id)
+    {
+        var file = await _repository.GetFileByIdAsync(id);
+
+        if (file != null)
+        {
+            if (File.Exists(file.Path))
+            {
+                File.Delete(file.Path);
+            }
+
+            await _repository.RemoveFileAsync(file);
+        }
     }
     #endregion
 }
