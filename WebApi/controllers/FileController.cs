@@ -25,6 +25,13 @@ public class FileController : ControllerBase
         return Ok();
     }
 
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _service.DeleteFileAsync(id);
+        return Ok();
+    }
+
     [HttpGet]
     public async Task<IActionResult> Get()
     {
