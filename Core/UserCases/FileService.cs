@@ -49,7 +49,7 @@ public class FileService : IFileService
                 SizeInBytes = fileSize,
                 MimeType = mimeType,
                 UploadedBy = userId,
-                UploadedAt = DateTime.UtcNow
+                UploadedAt = DateTime.Now
             };
 
             filesEntity.Add(entity);
