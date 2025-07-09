@@ -1,4 +1,5 @@
 using Core.Entities;
+using Core.Entities.Dto;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -66,6 +67,26 @@ public class FileService : IFileService
     public async Task<FileEntity?> GetFileAsync(Guid id)
     {
         return await _repository.GetFileByIdAsync(id);
+    }
+
+    public async Task<FileDownloadDto?> GetFileContentAsync(Guid id)
+    {
+        var file = await _repository.GetFileByIdAsync(id);
+
+        if (file == null)
+            return null;
+
+        if (!File.Exists(file.Path))
+            return null;
+
+        var stream = new FileStream(file.Path, FileMode.Open, FileAccess.Read);
+
+        return new FileDownloadDto
+        {
+            ContentStream = stream,
+            ContentType = file.MimeType,
+            OriginalName = file.OriginalName
+        };
     }
     #endregion
 }
