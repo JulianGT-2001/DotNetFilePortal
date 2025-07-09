@@ -1,10 +1,19 @@
-using Core.Entities;
+using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 using Core.Interfaces;
 using Core.UserCases;
 using Infraestructure;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+DotNetEnv.Env.Load();
+
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+var downloadPath = Environment.GetEnvironmentVariable("DOWNLOAD_PATH");
+
+
+builder.Configuration["ConnectionStrings:DefaultConnection"] = connectionString;
+builder.Configuration["DownloadPath"] = downloadPath;
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
