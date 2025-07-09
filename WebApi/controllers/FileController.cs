@@ -36,5 +36,20 @@ public class FileController : ControllerBase
     {
         return Ok(await _service.GetFileAsync(id));
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Download(Guid id)
+    {
+        var result = await _service.GetFileContentAsync(id);
+
+        if (result == null)
+            return NotFound();
+
+        return File(
+            result.ContentStream,
+            result.ContentType,
+            result.OriginalName
+        );
+    }
     #endregion
 }
