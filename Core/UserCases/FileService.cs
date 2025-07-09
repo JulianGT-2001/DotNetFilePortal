@@ -60,12 +60,12 @@ public class FileService : IFileService
 
     public Task<IEnumerable<FileEntity>> GetFilesAsync()
     {
-        throw new NotImplementedException();
+        return _repository.GetAllFilesAsync();
     }
 
-    public Task<FileEntity> GetFileAsync(Guid id)
+    public async Task<FileEntity?> GetFileAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _repository.GetFileByIdAsync(id);
     }
     #endregion
 }
