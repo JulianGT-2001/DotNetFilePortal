@@ -37,7 +37,7 @@ public class FileController : ControllerBase
         return Ok(await _service.GetFileAsync(id));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}/download")]
     public async Task<IActionResult> Download(Guid id)
     {
         var result = await _service.GetFileContentAsync(id);
