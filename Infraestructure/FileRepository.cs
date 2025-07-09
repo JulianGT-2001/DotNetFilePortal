@@ -5,7 +5,7 @@ namespace Infraestructure;
 
 public class FileRepository : IFileRepository
 {
-    public Task AddFileAsync(FileEntity file)
+    public Task AddFileAsync(List<FileEntity> file)
     {
         throw new NotImplementedException();
     }
