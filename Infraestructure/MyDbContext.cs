@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Infraestructure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Core.Entities;
 
-namespace Core.Entities;
+namespace Infraestructure;
 
 public partial class MyDbContext : DbContext
 {
