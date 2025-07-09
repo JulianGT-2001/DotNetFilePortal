@@ -28,13 +28,13 @@ public class FileController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        throw new NotImplementedException();
+        return Ok(await _service.GetFilesAsync());
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
-        throw new NotImplementedException();
+        return Ok(await _service.GetFileAsync(id));
     }
     #endregion
 }
