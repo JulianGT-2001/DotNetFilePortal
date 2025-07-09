@@ -36,4 +36,11 @@ public class FileRepository : IFileRepository
     {
         return await _db.TbFiles.FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task RemoveFileAsync(FileEntity file)
+    {
+        _db.Remove(file);
+
+        await _db.SaveChangesAsync();
+    }
 }
