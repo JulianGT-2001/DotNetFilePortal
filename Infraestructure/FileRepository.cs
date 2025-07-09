@@ -1,22 +1,39 @@
 using Core.Interfaces;
 using Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure;
 
 public class FileRepository : IFileRepository
 {
-    public Task AddFileAsync(List<FileEntity> file)
+    #region Atributos
+    private readonly MyDbContext _db;
+    #endregion
+
+    #region Constructor
+    public FileRepository(MyDbContext db)
     {
-        throw new NotImplementedException();
+        _db = db;
+    }
+    #endregion
+    public async Task AddFileAsync(List<FileEntity> file)
+    {
+        foreach (var item in file)
+        {
+            await _db.AddAsync(item);
+        }
+
+        await _db.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<FileEntity>> GetAllFilesAsync()
+    public async Task<IEnumerable<FileEntity>> GetAllFilesAsync()
     {
-        throw new NotImplementedException();
+
+        return await _db.TbFiles.ToListAsync();
     }
 
-    public Task<FileEntity?> GetFileByIdAsync(Guid id)
+    public async Task<FileEntity?> GetFileByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _db.TbFiles.FirstOrDefaultAsync(x => x.Id == id);
     }
 }
