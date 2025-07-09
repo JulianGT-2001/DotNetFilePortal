@@ -21,7 +21,8 @@ public class FileController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Register([FromForm] IFormFileCollection files, [FromForm] string userId)
     {
-        throw new NotImplementedException();
+        await _service.RegisterFileAsync(files, userId);
+        return Ok();
     }
 
     [HttpGet]
