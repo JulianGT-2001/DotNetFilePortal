@@ -38,14 +38,6 @@ services:
       file_upload_network:
         ipv4_address: 172.16.0.3
     restart: always
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-    networks:
-      file_upload_network:
-        ipv4_address: 172.16.0.2
 
 networks:
   file_upload_network:
