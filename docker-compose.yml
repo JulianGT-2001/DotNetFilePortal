@@ -1,0 +1,41 @@
+services:
+  fileuploaddb:
+    image: postgres:14.18-bookworm
+    container_name: 'postgres_fileupload_db'
+    shm_size: 128mb
+    env_file:
+      - WebApi/.env
+    environment:
+      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - type: tmpfs
+        target: /dev/shm
+        tmpfs:
+          size: 134217728
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      file_upload_network:
+        ipv4_address: 172.16.0.3
+    restart: always
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      file_upload_network:
+        ipv4_address: 172.16.0.2
+
+networks:
+  file_upload_network:
+    driver: 'bridge'
+    ipam:
+      config:
+        - subnet: 172.16.0.0/18
+          gateway: 172.16.0.1
+    
