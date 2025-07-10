@@ -1,12 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Core.Entities;
+using Microsoft.Extensions.Configuration;
 
 namespace Infraestructure;
 
 public partial class MyDbContext : DbContext
 {
+    private readonly IConfiguration? _configuration;
     public MyDbContext()
     {
+    }
+    public MyDbContext(IConfiguration configuration)
+    {
+        _configuration = configuration;
     }
 
     public MyDbContext(DbContextOptions<MyDbContext> options)
@@ -17,7 +23,8 @@ public partial class MyDbContext : DbContext
     public virtual DbSet<FileEntity> TbFiles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=Seguridad");
+    {
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
