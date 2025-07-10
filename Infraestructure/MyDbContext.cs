@@ -6,13 +6,8 @@ namespace Infraestructure;
 
 public partial class MyDbContext : DbContext
 {
-    private readonly IConfiguration? _configuration;
     public MyDbContext()
     {
-    }
-    public MyDbContext(IConfiguration configuration)
-    {
-        _configuration = configuration;
     }
 
     public MyDbContext(DbContextOptions<MyDbContext> options)
