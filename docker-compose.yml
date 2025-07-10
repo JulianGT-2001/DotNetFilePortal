@@ -16,6 +16,7 @@ services:
         tmpfs:
           size: 134217728
       - ./data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     networks:
