@@ -1,5 +1,6 @@
 using Core.Entities;
 using Core.Entities.Dto;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,14 +12,14 @@ namespace WebApi.controllers
     {
         #region Atributos
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
+        private readonly IUserService _service;
         #endregion
 
         #region Constructor
-        public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, IUserService service)
         {
             _userManager = userManager;
-            _configuration = configuration;
+            _service = service;
         }
         #endregion
 
@@ -26,13 +27,22 @@ namespace WebApi.controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
+            await _service.RegisterAsync(model);
             return Ok();
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            return Ok();
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                return Unauthorized();
+            }
+
+            var result = _service.LoginAsync(user);
+
+            return Ok(result);
         }
         #endregion
     }    
