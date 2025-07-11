@@ -41,8 +41,6 @@ public partial class MyDbContext : IdentityDbContext<ApplicationUser>
                 .HasColumnName("uploaded_at");
         });
 
-        OnModelCreatingPartial(modelBuilder);
+        base.OnModelCreating(modelBuilder);
     }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
