@@ -1,0 +1,12 @@
+namespace Core.Entities
+{
+    public class FileUser
+    {
+        public Guid Id { get; set; }
+        public Guid FileId { get; set; }
+        public string UserId { get; set; } = default!;
+
+        public FileEntity File { get; set; } = new FileEntity();
+        public ApplicationUser User { get; set; } = new ApplicationUser();
+    }
+}

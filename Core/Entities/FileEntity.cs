@@ -8,4 +8,6 @@ public class FileEntity
     public long SizeInBytes { get; set; }
     public string MimeType { get; set; } = default!;
     public DateTime UploadedAt { get; set; }
+
+    public ICollection<FileUser> FileUsers { get; set; } = new List<FileUser>();
 }
