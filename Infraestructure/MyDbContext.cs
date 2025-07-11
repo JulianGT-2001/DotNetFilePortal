@@ -41,6 +41,31 @@ public partial class MyDbContext : IdentityDbContext<ApplicationUser>
                 .HasColumnName("uploaded_at");
         });
 
+        modelBuilder.Entity<FileUser>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("tfu_id_pk");
+
+            entity.ToTable("db_file_user");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.FileId).HasColumnName("file_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(e => e.File)
+                .WithMany(e => e.FileUsers)
+                .HasConstraintName("tfu_file_id_fk")
+                .HasForeignKey(e => e.FileId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.User)
+                .WithMany(e => e.FileUsers)
+                .HasConstraintName("tfu_user_id_fk")
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
         base.OnModelCreating(modelBuilder);
     }
 }
