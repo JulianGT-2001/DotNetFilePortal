@@ -50,7 +50,6 @@ public class FileService : IFileService
                 Path = path,
                 SizeInBytes = fileSize,
                 MimeType = mimeType,
-                UploadedBy = userId,
                 UploadedAt = DateTime.Now
             };
 
