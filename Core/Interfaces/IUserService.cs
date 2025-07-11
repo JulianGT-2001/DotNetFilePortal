@@ -1,3 +1,4 @@
+using Core.Entities;
 using Core.Entities.Dto;
 
 namespace Core.Interfaces
@@ -5,6 +6,6 @@ namespace Core.Interfaces
     public interface IUserService
     {
         Task RegisterAsync(RegisterDto model);
-        Task<object> LoginAsync(LoginDto model);
+        object LoginAsync(ApplicationUser user);
     }
 }
