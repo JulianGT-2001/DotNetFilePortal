@@ -124,6 +124,31 @@ namespace Infraestructure.Migrations
                     b.ToTable("tb_file", (string)null);
                 });
 
+            modelBuilder.Entity("Core.Entities.FileUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("FileId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("file_id");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("tfu_id_pk");
+
+                    b.HasIndex("FileId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("tb_file_user", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -256,6 +281,27 @@ namespace Infraestructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Core.Entities.FileUser", b =>
+                {
+                    b.HasOne("Core.Entities.FileEntity", "File")
+                        .WithMany("FileUsers")
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("tfu_file_id_fk");
+
+                    b.HasOne("Core.Entities.ApplicationUser", "User")
+                        .WithMany("FileUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("tfu_user_id_fk");
+
+                    b.Navigation("File");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -305,6 +351,16 @@ namespace Infraestructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("FileUsers");
+                });
+
+            modelBuilder.Entity("Core.Entities.FileEntity", b =>
+                {
+                    b.Navigation("FileUsers");
                 });
 #pragma warning restore 612, 618
         }

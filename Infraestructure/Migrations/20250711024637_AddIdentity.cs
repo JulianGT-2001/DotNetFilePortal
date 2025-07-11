@@ -174,6 +174,31 @@ namespace Infraestructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "tb_file_user",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    file_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("tfu_id_pk", x => x.id);
+                    table.ForeignKey(
+                        name: "tfu_file_id_fk",
+                        column: x => x.file_id,
+                        principalTable: "tb_file",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "tfu_user_id_fk",
+                        column: x => x.user_id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -210,6 +235,16 @@ namespace Infraestructure.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_file_user_file_id",
+                table: "tb_file_user",
+                column: "file_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_file_user_user_id",
+                table: "tb_file_user",
+                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -231,10 +266,13 @@ namespace Infraestructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "tb_file");
+                name: "tb_file_user");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "tb_file");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

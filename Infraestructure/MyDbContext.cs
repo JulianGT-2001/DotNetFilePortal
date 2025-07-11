@@ -45,7 +45,7 @@ public partial class MyDbContext : IdentityDbContext<ApplicationUser>
         {
             entity.HasKey(e => e.Id).HasName("tfu_id_pk");
 
-            entity.ToTable("db_file_user");
+            entity.ToTable("tb_file_user");
 
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
