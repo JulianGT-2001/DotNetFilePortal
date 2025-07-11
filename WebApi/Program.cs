@@ -11,7 +11,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-DotNetEnv.Env.Load();
+DotNetEnv.Env.Load(@"..\.env");
 
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 var downloadPath = Environment.GetEnvironmentVariable("DOWNLOAD_PATH");
