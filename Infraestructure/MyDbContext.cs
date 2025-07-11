@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Infraestructure;
 
-public partial class MyDbContext : DbContext
+public partial class MyDbContext : IdentityDbContext<ApplicationUser>
 {
     public MyDbContext()
     {
@@ -37,7 +39,6 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.UploadedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("uploaded_at");
-            entity.Property(e => e.UploadedBy).HasColumnName("uploaded_by");
         });
 
         OnModelCreatingPartial(modelBuilder);
