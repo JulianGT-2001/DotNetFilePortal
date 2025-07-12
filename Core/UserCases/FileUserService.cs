@@ -59,11 +59,6 @@ namespace Core.UserCases
 
             if (file != null)
             {
-                if (File.Exists(file.Path))
-                {
-                    File.Delete(file.Path);
-                }
-
                 await _repository.RemoveFileByUserIdAsync(user, file);
             }
         }
