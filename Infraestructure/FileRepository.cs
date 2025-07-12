@@ -16,14 +16,18 @@ public class FileRepository : IFileRepository
         _db = db;
     }
     #endregion
-    public async Task AddFileAsync(List<FileEntity> file)
+    public async Task<IEnumerable<Guid>> AddFileAsync(List<FileEntity> file)
     {
+        List<Guid> fileGuids = new List<Guid>();
         foreach (var item in file)
         {
             await _db.AddAsync(item);
+            fileGuids.Add(item.Id);
         }
 
         await _db.SaveChangesAsync();
+
+        return fileGuids;
     }
 
     public async Task<IEnumerable<FileEntity>> GetAllFilesAsync()
