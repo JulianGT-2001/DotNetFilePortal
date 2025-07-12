@@ -17,6 +17,7 @@ public partial class MyDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public virtual DbSet<FileEntity> TbFiles { get; set; }
+    public virtual DbSet<FileUser> TbFilesUser { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=Seguridad");
