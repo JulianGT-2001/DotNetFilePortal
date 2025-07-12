@@ -65,6 +65,10 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFileUserRepository, FileUserRepository>();
+builder.Services.AddScoped<IFileUserService, FileUserService>();
 
 var app = builder.Build();
 
