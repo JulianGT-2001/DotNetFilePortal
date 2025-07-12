@@ -2,7 +2,7 @@ namespace Core.Entities
 {
     public class FileUser
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Guid FileId { get; set; }
         public string UserId { get; set; } = default!;
 
