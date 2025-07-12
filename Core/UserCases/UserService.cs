@@ -13,15 +13,13 @@ namespace Core.UserCases
     public class UserService : IUserService
     {
         #region Atributos
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _repository;
         #endregion
 
         #region Constructor
-        public UserService(UserManager<ApplicationUser> userManager, IConfiguration configuration, IUserRepository repository)
+        public UserService(IConfiguration configuration, IUserRepository repository)
         {
-            _userManager = userManager;
             _configuration = configuration;
             _repository = repository;
         }
@@ -43,12 +41,6 @@ namespace Core.UserCases
 
         public object LoginAsync(ApplicationUser user)
         {
-            // var user = await _userManager.FindByEmailAsync(model.Email);
-            // if (user == null)
-            // {
-            //     return Unauthorized();
-            // }
-            // var chkPassword = await _userManager.CheckPasswordAsync(user, model.Password);
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
