@@ -4,9 +4,9 @@ namespace Core.Interfaces
 {
     public interface IFileUserRepository
     {
-        Task AddFileUserAsync(ApplicationUser user, List<Guid> files);
-        Task<IEnumerable<FileEntity>> GetAllFilesUserAsync(ApplicationUser user);
-        Task<FileEntity?> GetFileByUserIdAsync(ApplicationUser user, Guid id);
-        Task RemoveFileByUserIdAsync(ApplicationUser user, FileEntity file);
+        Task AddFileUserAsync(string userId, IEnumerable<Guid> files);
+        Task<IEnumerable<FileEntity>> GetAllFilesUserAsync(string userId);
+        Task<FileEntity?> GetFileByUserIdAsync(string userId, Guid id);
+        Task RemoveFileByUserIdAsync(string userId, FileEntity file);
     }
 }

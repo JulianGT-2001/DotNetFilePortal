@@ -5,10 +5,10 @@ namespace Core.Interfaces
 {
     public interface IFileUserService
     {
-        Task RegisterFileUserAsync(ApplicationUser user, List<Guid> guids);
-        Task<IEnumerable<FileEntity>> GetFilesUserAsync(ApplicationUser user);
-        Task<FileEntity?> GetFileUserAsync(ApplicationUser user, Guid fileId);
-        Task<FileDownloadDto?> GetFileContentUserAsync(ApplicationUser user, Guid fileId);
-        Task DeleteUserFileAsync(ApplicationUser user, Guid id);
+        Task RegisterFileUserAsync(string userId, IEnumerable<Guid> guids);
+        Task<IEnumerable<FileEntity>> GetFilesUserAsync(string userId);
+        Task<FileEntity?> GetFileUserAsync(string userId, Guid fileId);
+        Task<FileDownloadDto?> GetFileContentUserAsync(string userId, Guid fileId);
+        Task DeleteUserFileAsync(string userId, Guid id);
     }
 }

@@ -18,24 +18,24 @@ namespace Core.UserCases
         }
         #endregion
         #region Metodos
-        public async Task RegisterFileUserAsync(ApplicationUser user, List<Guid> guids)
+        public async Task RegisterFileUserAsync(string userId, IEnumerable<Guid> guids)
         {
-            await _repository.AddFileUserAsync(user, guids);
+            await _repository.AddFileUserAsync(userId, guids);
         }
 
-        public async Task<IEnumerable<FileEntity>> GetFilesUserAsync(ApplicationUser user)
+        public async Task<IEnumerable<FileEntity>> GetFilesUserAsync(string userId)
         {
-            return await _repository.GetAllFilesUserAsync(user);
+            return await _repository.GetAllFilesUserAsync(userId);
         }
 
-        public async Task<FileEntity?> GetFileUserAsync(ApplicationUser user, Guid fileId)
+        public async Task<FileEntity?> GetFileUserAsync(string userId, Guid fileId)
         {
-            return await _repository.GetFileByUserIdAsync(user, fileId);
+            return await _repository.GetFileByUserIdAsync(userId, fileId);
         }
 
-        public async Task<FileDownloadDto?> GetFileContentUserAsync(ApplicationUser user, Guid fileId)
+        public async Task<FileDownloadDto?> GetFileContentUserAsync(string userId, Guid fileId)
         {
-            var file = await _repository.GetFileByUserIdAsync(user, fileId);
+            var file = await _repository.GetFileByUserIdAsync(userId, fileId);
 
             if (file == null)
                 return null;
@@ -53,13 +53,13 @@ namespace Core.UserCases
             };
         }
 
-        public async Task DeleteUserFileAsync(ApplicationUser user, Guid id)
+        public async Task DeleteUserFileAsync(string userId, Guid id)
         {
-            var file = await _repository.GetFileByUserIdAsync(user, id);
+            var file = await _repository.GetFileByUserIdAsync(userId, id);
 
             if (file != null)
             {
-                await _repository.RemoveFileByUserIdAsync(user, file);
+                await _repository.RemoveFileByUserIdAsync(userId, file);
             }
         }
         #endregion
