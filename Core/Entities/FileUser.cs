@@ -6,7 +6,7 @@ namespace Core.Entities
         public Guid FileId { get; set; }
         public string UserId { get; set; } = default!;
 
-        public FileEntity File { get; set; } = new FileEntity();
-        public ApplicationUser User { get; set; } = new ApplicationUser();
+        public FileEntity File { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
     }
 }

@@ -9,5 +9,5 @@ public class FileEntity
     public string MimeType { get; set; } = default!;
     public DateTime UploadedAt { get; set; }
 
-    public ICollection<FileUser> FileUsers { get; set; } = new List<FileUser>();
+    public ICollection<FileUser> FileUsers { get; set; } = null!;
 }
