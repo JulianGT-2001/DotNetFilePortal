@@ -21,7 +21,7 @@ public class FileService : IFileService
     }
     #endregion
     #region methods
-    public async Task RegisterFileAsync(IFormFileCollection files, string userId)
+    public async Task<IEnumerable<Guid>> RegisterFileAsync(IFormFileCollection files, string userId)
     {
         List<FileEntity> filesEntity = new List<FileEntity>();
         foreach (var file in files)
@@ -50,14 +50,15 @@ public class FileService : IFileService
                 Path = path,
                 SizeInBytes = fileSize,
                 MimeType = mimeType,
-                UploadedBy = userId,
                 UploadedAt = DateTime.Now
             };
 
             filesEntity.Add(entity);
         }
 
-        await _repository.AddFileAsync(filesEntity);
+        var fileGuids = await _repository.AddFileAsync(filesEntity);
+
+        return fileGuids;
     }
 
     public Task<IEnumerable<FileEntity>> GetFilesAsync()

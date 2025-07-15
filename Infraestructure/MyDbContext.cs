@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Core.Entities;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Infraestructure;
 
-public partial class MyDbContext : DbContext
+public partial class MyDbContext : IdentityDbContext<ApplicationUser>
 {
     public MyDbContext()
     {
@@ -16,6 +17,7 @@ public partial class MyDbContext : DbContext
     }
 
     public virtual DbSet<FileEntity> TbFiles { get; set; }
+    public virtual DbSet<FileUser> TbFilesUser { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -39,11 +41,33 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.UploadedAt)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("uploaded_at");
-            entity.Property(e => e.UploadedBy).HasColumnName("uploaded_by");
         });
 
-        OnModelCreatingPartial(modelBuilder);
-    }
+        modelBuilder.Entity<FileUser>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("tfu_id_pk");
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+            entity.ToTable("tb_file_user");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.FileId).HasColumnName("file_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(e => e.File)
+                .WithMany(e => e.FileUsers)
+                .HasConstraintName("tfu_file_id_fk")
+                .HasForeignKey(e => e.FileId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.User)
+                .WithMany(e => e.FileUsers)
+                .HasConstraintName("tfu_user_id_fk")
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        base.OnModelCreating(modelBuilder);
+    }
 }

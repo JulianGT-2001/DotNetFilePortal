@@ -137,15 +137,6 @@ Usa **Postman**, **curl** o tu frontend React/HTML:
 
 ---
 
-## 🗃️ **To do / Futuro**
-
-- ✅ Implementar autenticación JWT.
-- ✅ Agregar tests unitarios con xUnit.
-- ✅ Pipeline CI/CD con GitHub Actions.
-- ✅ Despliegue en Azure Container Apps o AWS ECS.
-
----
-
 ## 📝 **Licencia**
 
 MIT — Puedes usar este proyecto como base para fines educativos y empresariales.
@@ -154,10 +145,6 @@ MIT — Puedes usar este proyecto como base para fines educativos y empresariale
 
 ## 🙌 **Autor**
 
-**Tu Nombre (@tuusuario)**  
-📧 contacto@tucorreo.com  
-🔗 [LinkedIn](https://linkedin.com/in/tuusuario)
-
----
-
-🚀 ¡Listo para escalar, extender y llevar a producción!
+**JulianGT-2001**  
+📧 juliant.2001@outlook.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/julian-dario-gonzalez-toledo-402482223/)

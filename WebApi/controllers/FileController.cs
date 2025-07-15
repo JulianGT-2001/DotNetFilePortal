@@ -1,53 +1,77 @@
+using System.Security.Claims;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.controllers;
 
+[Authorize]
 [ApiController]
 [Route("/api/[controller]")]
 public class FileController : ControllerBase
 {
     #region Attributes
-    private readonly IFileService _service;
+    private readonly IFileService _fileService;
+    private readonly IFileUserService _fileUserservice;
     #endregion
     #region Constructor
-    public FileController(IFileService service)
+    public FileController(IFileService service, IFileUserService fileUserService)
     {
-        _service = service;
+        _fileService = service;
+        _fileUserservice = fileUserService;
     }
     #endregion
     #region Methods
     [HttpPost]
-    public async Task<IActionResult> Register([FromForm] IFormFileCollection files, [FromForm] string userId)
+    public async Task<IActionResult> Register([FromForm] IFormFileCollection files)
     {
-        await _service.RegisterFileAsync(files, userId);
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+        var fileGuids = await _fileService.RegisterFileAsync(files, userId);
+        await _fileUserservice.RegisterFileUserAsync(userId, fileGuids);
         return Ok();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        await _service.DeleteFileAsync(id);
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+
+        await _fileUserservice.DeleteUserFileAsync(userId, id);
+        await _fileService.DeleteFileAsync(id);
         return Ok();
     }
 
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        return Ok(await _service.GetFilesAsync());
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+        return Ok(await _fileUserservice.GetFilesUserAsync(userId));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
-        return Ok(await _service.GetFileAsync(id));
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+        return Ok(await _fileUserservice.GetFileUserAsync(userId, id));
     }
 
     [HttpGet("{id}/download")]
     public async Task<IActionResult> Download(Guid id)
     {
-        var result = await _service.GetFileContentAsync(id);
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized();
+        var result = await _fileUserservice.GetFileContentUserAsync(userId, id);
 
         if (result == null)
             return NotFound();
