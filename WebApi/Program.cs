@@ -66,7 +66,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<MyDbContext>();
+    db.Database.Migrate();
+}
+
+    app.UseHttpsRedirection();
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
