@@ -6,7 +6,7 @@ services:
       - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5000
-      - DownloadPath=/app/files
+      - DownloadPath=${DOWNLOAD_PATH_PRODUCTION}
       - JWT_KEY=${JWT_KEY}
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_AUDIENCE=${JWT_AUDIENCE}
@@ -17,7 +17,7 @@ services:
       file_upload_network:
         ipv4_address: 172.16.0.4
     volumes:
-      - dotnetfp_files:/app/files
+      - dotnetfp_files:${DOWNLOAD_PATH_PRODUCTION}
     depends_on:
       - fileuploaddb
   fileuploaddb:
@@ -34,7 +34,6 @@ services:
         tmpfs:
           size: 134217728
       - ./data:/var/lib/postgresql/data
-      - ./initdb:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     networks:
