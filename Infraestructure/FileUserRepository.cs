@@ -1,4 +1,5 @@
 using Core.Entities;
+using Core.Entities.Dto;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,23 +34,41 @@ namespace Infraestructure
             await _db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<FileEntity>> GetAllFilesUserAsync(string userId)
+        public async Task<IEnumerable<FileResponseDto>> GetAllFilesUserAsync(string userId)
         {
             return await _db.TbFiles
             .Include(e => e.FileUsers)
             .Where(e => e.FileUsers.All(t => t.UserId == userId))
+            .Select(t => new FileResponseDto
+            {
+                Id = t.Id,
+                OriginalName = t.OriginalName,
+                Path = t.Path,
+                SizeInBytes = t.SizeInBytes,
+                MimeType = t.MimeType,
+                UploadedAt = t.UploadedAt
+            })
             .ToListAsync();
         }
 
-        public async Task<FileEntity?> GetFileByUserIdAsync(string userId, Guid id)
+        public async Task<FileResponseDto?> GetFileByUserIdAsync(string userId, Guid id)
         {
             return await _db.TbFiles
             .Include(e => e.FileUsers)
             .Where(e => e.FileUsers.Any(t => t.UserId == userId) && e.Id == id)
+            .Select(t => new FileResponseDto
+            {
+                Id = t.Id,
+                OriginalName = t.OriginalName,
+                Path = t.Path,
+                SizeInBytes = t.SizeInBytes,
+                MimeType = t.MimeType,
+                UploadedAt = t.UploadedAt
+            })
             .FirstOrDefaultAsync();
         }
 
-        public async Task RemoveFileByUserIdAsync(string userId, FileEntity file)
+        public async Task RemoveFileByUserIdAsync(string userId, FileResponseDto file)
         {
             var fileUser = await _db.TbFilesUser.Where(t => t.UserId == userId && t.FileId == file.Id).FirstOrDefaultAsync();
 
