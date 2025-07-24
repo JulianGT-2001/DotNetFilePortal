@@ -23,12 +23,12 @@ namespace Core.UserCases
             await _repository.AddFileUserAsync(userId, guids);
         }
 
-        public async Task<IEnumerable<FileEntity>> GetFilesUserAsync(string userId)
+        public async Task<IEnumerable<FileResponseDto>> GetFilesUserAsync(string userId)
         {
             return await _repository.GetAllFilesUserAsync(userId);
         }
 
-        public async Task<FileEntity?> GetFileUserAsync(string userId, Guid fileId)
+        public async Task<FileResponseDto?> GetFileUserAsync(string userId, Guid fileId)
         {
             return await _repository.GetFileByUserIdAsync(userId, fileId);
         }
