@@ -1,6 +1,7 @@
 using Core.Entities;
 using Core.Entities.Dto;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,7 @@ namespace WebApi.controllers
         #endregion
 
         #region Metodos
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
@@ -31,6 +33,7 @@ namespace WebApi.controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {

@@ -7,7 +7,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5000
       - DownloadPath=${DOWNLOAD_PATH_PRODUCTION}
-      - Jwt__key=${JWT_KEY}
+      - Jwt__Key=${JWT_KEY}
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__Duration=${JWT_DURATION}
