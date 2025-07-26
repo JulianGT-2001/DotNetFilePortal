@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infraestructure;
 
+[ExcludeFromCodeCoverage]
 public partial class MyDbContext : IdentityDbContext<ApplicationUser>
 {
     public MyDbContext()

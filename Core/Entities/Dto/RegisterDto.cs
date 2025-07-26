@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Core.Entities.Dto
 {
+    [ExcludeFromCodeCoverage]
     public class RegisterDto
     {
         public string Email { get; set; } = default!;

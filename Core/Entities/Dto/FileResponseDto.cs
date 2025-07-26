@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Core.Entities.Dto
 {
+    [ExcludeFromCodeCoverage]
     public class FileResponseDto
     {
         public Guid Id { get; set; } = default!;

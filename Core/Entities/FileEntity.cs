@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Core.Entities;
 
+[ExcludeFromCodeCoverage]
 public class FileEntity
 {
     public Guid Id { get; set; } = Guid.NewGuid();

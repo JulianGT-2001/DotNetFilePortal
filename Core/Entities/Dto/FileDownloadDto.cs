@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Core.Entities.Dto;
 
+[ExcludeFromCodeCoverage]
 public class FileDownloadDto
 {
     public Stream ContentStream { get; set; } = default!;
