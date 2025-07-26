@@ -22,7 +22,12 @@ public partial class MyDbContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<FileUser> TbFilesUser { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=Seguridad");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Database=mydb;Username=myuser;Password=mypass"); // Tu conexión real
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

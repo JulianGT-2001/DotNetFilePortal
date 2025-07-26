@@ -1,6 +1,7 @@
 using Core.Entities;
 using Infraestructure;
 using Microsoft.EntityFrameworkCore;
+using EntityFrameworkCore.Testing.Moq;
 using Moq;
 
 namespace fileupload.Tests
@@ -28,6 +29,27 @@ namespace fileupload.Tests
         }
 
         [Fact]
+        public async Task AddFileAsync_ReturnsGuids_WhenListHasMultipleItems()
+        {
+            var files = new List<FileEntity>
+            {
+                new FileEntity { Id = Guid.NewGuid() },
+                new FileEntity { Id = Guid.NewGuid() }
+            };
+
+            var mockDbContext = new Mock<MyDbContext>();
+            mockDbContext.Setup(x => x.AddAsync(It.IsAny<FileEntity>(), default))
+                        .ReturnsAsync((FileEntity f, CancellationToken _) => null);
+            mockDbContext.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(1);
+
+            var repo = new FileRepository(mockDbContext.Object);
+            var result = await repo.AddFileAsync(files);
+
+            Assert.Equal(2, result.Count());
+        }
+
+        [Fact]
         public async Task AddFileAsync_Throw_WhenArgumentIsNull()
         {
             var mockDbSet = new Mock<DbSet<FileEntity>>();
@@ -36,6 +58,48 @@ namespace fileupload.Tests
             FileRepository fileRepository = new FileRepository(mockDbContext.Object);
 
             await Assert.ThrowsAsync<ArgumentNullException>(() => fileRepository.AddFileAsync(null));
+        }
+
+        [Fact]
+        public async Task GetAllFilesAsync_ReturnsEmpty_WhenNoFilesExist()
+        {
+            var options = new DbContextOptionsBuilder<MyDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Aislado por prueba
+                .Options;
+
+            await using var context = new MyDbContext(options);
+            var repo = new FileRepository(context);
+
+            var result = await repo.GetAllFilesAsync();
+
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public async Task GetAllFilesAsync_ReturnsFiles_WhenFilesExist()
+        {
+            var options = new DbContextOptionsBuilder<MyDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            await using (var context = new MyDbContext(options))
+            {
+                context.TbFiles.AddRange(
+                    new FileEntity { Id = Guid.NewGuid(), OriginalName = "file1.pdf", MimeType = "application/pdf", Path = "c:/pruebas" },
+                    new FileEntity { Id = Guid.NewGuid(), OriginalName = "file2.pdf", MimeType = "application/pdf", Path = "c:/pruebas" }
+                );
+                await context.SaveChangesAsync();
+            }
+
+            await using (var context = new MyDbContext(options))
+            {
+                var repo = new FileRepository(context);
+                var result = await repo.GetAllFilesAsync();
+
+                Assert.Equal(2, result.Count());
+                Assert.Contains(result, f => f.OriginalName == "file1.pdf");
+                Assert.Contains(result, f => f.OriginalName == "file2.pdf");
+            }
         }
     }
 }
