@@ -3,6 +3,7 @@ using Infraestructure;
 using Microsoft.EntityFrameworkCore;
 using EntityFrameworkCore.Testing.Moq;
 using Moq;
+using System.Threading.Tasks;
 
 namespace fileupload.Tests
 {
@@ -100,6 +101,82 @@ namespace fileupload.Tests
                 Assert.Contains(result, f => f.OriginalName == "file1.pdf");
                 Assert.Contains(result, f => f.OriginalName == "file2.pdf");
             }
+        }
+
+        [Fact]
+        public async Task GetFileByIdAsync_WhenFileNotFound()
+        {
+            var options = new DbContextOptionsBuilder<MyDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            await using var context = new MyDbContext(options);
+            var repo = new FileRepository(context);
+
+            var guid = Guid.NewGuid();
+
+            var result = await repo.GetFileByIdAsync(guid);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetFileByIdAsync_WhenFileFound()
+        {
+            var options = new DbContextOptionsBuilder<MyDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            var guidToFound = Guid.NewGuid();
+
+            await using (var context = new MyDbContext(options))
+            {
+                context.TbFiles.AddRange(
+                    new FileEntity { Id = guidToFound, OriginalName = "file1.pdf", MimeType = "application/pdf", Path = "c:/pruebas" }
+                );
+                await context.SaveChangesAsync();
+            }
+            ;
+
+            await using (var context = new MyDbContext(options))
+            {
+                var repo = new FileRepository(context);
+
+                var result = await repo.GetFileByIdAsync(guidToFound);
+
+                Assert.NotNull(result);
+                Assert.Contains("file1.pdf", result.OriginalName);
+                Assert.Contains(guidToFound.ToString(), result.Id.ToString());
+            }
+            ;
+        }
+
+        [Fact]
+        public async Task RemoveFileAsync_WhenDeleteIsSuccessfull()
+        {
+            var options = new DbContextOptionsBuilder<MyDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+                
+            var guidToFound = Guid.NewGuid();
+
+            await using (var context = new MyDbContext(options))
+            {
+                context.TbFiles.AddRange(
+                    new FileEntity { Id = guidToFound, OriginalName = "file1.pdf", MimeType = "application/pdf", Path = "c:/pruebas" }
+                );
+                
+                await context.SaveChangesAsync();
+            }
+            ;
+
+            await using (var context = new MyDbContext(options))
+            {
+                var repo = new FileRepository(context);
+                var file = new FileEntity { Id = guidToFound, OriginalName = "file1.pdf", MimeType = "application/pdf", Path = "c:/pruebas" };
+                await repo.RemoveFileAsync(file);
+            }
+            ;
         }
     }
 }
