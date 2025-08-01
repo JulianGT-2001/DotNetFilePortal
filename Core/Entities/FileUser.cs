@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Core.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class FileUser
     {
         public Guid Id { get; set; } = Guid.NewGuid();

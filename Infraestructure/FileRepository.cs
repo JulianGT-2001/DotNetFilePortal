@@ -18,6 +18,9 @@ public class FileRepository : IFileRepository
     #endregion
     public async Task<IEnumerable<Guid>> AddFileAsync(List<FileEntity> file)
     {
+        if (file == null)
+            throw new ArgumentNullException(nameof(file));
+            
         List<Guid> fileGuids = new List<Guid>();
         foreach (var item in file)
         {

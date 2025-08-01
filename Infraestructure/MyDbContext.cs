@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Infraestructure;
 
+[ExcludeFromCodeCoverage]
 public partial class MyDbContext : IdentityDbContext<ApplicationUser>
 {
     public MyDbContext()
@@ -21,6 +23,10 @@ public partial class MyDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Database=mydb;Username=myuser;Password=mypass"); // Tu conexión real
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
