@@ -7,6 +7,7 @@ namespace Core.Interfaces
     {
         Task RegisterUserAsync(ApplicationUser user, string password);
         Task<ApplicationUser?> GetUserAsync(ClaimsPrincipal claim);
-        bool ResetAuthenticatorKey(ApplicationUser user);
+        Task ResetAuthenticatorKey(ApplicationUser user);
+        Task<string?> GetAuthenticatorKeyAsync(ApplicationUser user);
     }
 }

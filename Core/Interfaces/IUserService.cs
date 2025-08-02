@@ -9,6 +9,7 @@ namespace Core.Interfaces
         Task RegisterAsync(RegisterDto model);
         object LoginAsync(ApplicationUser user);
         Task<ApplicationUser?> ObtenerUsuarioPorClaim(ClaimsPrincipal claim);
-        bool ReiniciarClaveDeAutenticacion(ApplicationUser user);
+        Task ReiniciarClaveDeAutenticacion(string email);
+        Task<string?> ObtenerClaveDeAutenticacionAsync(string email);
     }
 }

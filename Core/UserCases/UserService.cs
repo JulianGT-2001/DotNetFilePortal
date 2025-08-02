@@ -15,13 +15,15 @@ namespace Core.UserCases
         #region Atributos
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _repository;
+        private readonly UserManager<ApplicationUser> _userManager;
         #endregion
 
         #region Constructor
-        public UserService(IConfiguration configuration, IUserRepository repository)
+        public UserService(IConfiguration configuration, IUserRepository repository, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
             _repository = repository;
+            _userManager = userManager;
         }
 
         #endregion
@@ -70,9 +72,19 @@ namespace Core.UserCases
             return await _repository.GetUserAsync(claim);
         }
 
-        public bool ReiniciarClaveDeAutenticacion(ApplicationUser user)
+        public async Task ReiniciarClaveDeAutenticacion(string email)
         {
-            return _repository.ResetAuthenticatorKey(user);
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+                await _repository.ResetAuthenticatorKey(user);
+        }
+
+        public async Task<string?> ObtenerClaveDeAutenticacionAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return string.Empty;
+            return await _repository.GetAuthenticatorKeyAsync(user);
         }
         #endregion
     }

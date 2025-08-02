@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -30,9 +31,14 @@ namespace Infraestructure
             return user;
         }
 
-        public bool ResetAuthenticatorKey(ApplicationUser user)
+        public async Task ResetAuthenticatorKey(ApplicationUser user)
         {
-            return _userManager.ResetAuthenticatorKeyAsync(user).IsCompleted;
+            await _userManager.ResetAuthenticatorKeyAsync(user);
+        }
+
+        public async Task<string?> GetAuthenticatorKeyAsync(ApplicationUser user)
+        {
+            return await _userManager.GetAuthenticatorKeyAsync(user);
         }
         #endregion
     }
