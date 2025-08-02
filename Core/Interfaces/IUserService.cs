@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Core.Entities;
 using Core.Entities.Dto;
 
@@ -7,5 +8,6 @@ namespace Core.Interfaces
     {
         Task RegisterAsync(RegisterDto model);
         object LoginAsync(ApplicationUser user);
+        Task<ApplicationUser?> ObtenerUsuarioPorClaim(ClaimsPrincipal claim);
     }
 }

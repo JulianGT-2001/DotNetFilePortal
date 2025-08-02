@@ -64,6 +64,11 @@ namespace Core.UserCases
                 expiration = token.ValidTo
             };
         }
+
+        public async Task<ApplicationUser?> ObtenerUsuarioPorClaim(ClaimsPrincipal claim)
+        {
+            return await _repository.GetUserAsync(claim);
+        }
         #endregion
     }
 }
