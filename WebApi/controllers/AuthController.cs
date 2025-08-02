@@ -57,6 +57,20 @@ namespace WebApi.controllers
 
             return await _service.ObtenerUsuarioPorClaim(User);
         }
+
+        [Authorize]
+        [HttpPost("reiniciar_clave_de_autenticacion")]
+        public IActionResult ReiniciarClaveDeAutenticacion(ApplicationUser? userModel)
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(user))
+                return Unauthorized();
+
+            if (userModel == null)
+                return NotFound();
+
+            return Ok(_service.ReiniciarClaveDeAutenticacion(userModel));
+        }
         #endregion
     }    
 }
