@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using Core.Entities;
 using Core.Entities.Dto;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +45,17 @@ namespace WebApi.controllers
             var result = _service.LoginAsync(user);
 
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<ApplicationUser?>> ObtenerUsuario()
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(user))
+                return Unauthorized();
+
+            return await _service.ObtenerUsuarioPorClaim(User);
         }
         #endregion
     }    
