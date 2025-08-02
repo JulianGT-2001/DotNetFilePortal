@@ -59,7 +59,7 @@ namespace WebApi.controllers
         }
 
         [Authorize]
-        [HttpGet("reiniciar_clave_de_autenticacion")]
+        [HttpGet("{email}/reiniciar_clave_de_autenticacion")]
         public async Task<IActionResult> ReiniciarClaveDeAutenticacion(string? email)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -75,7 +75,7 @@ namespace WebApi.controllers
         }
 
         [Authorize]
-        [HttpGet("obtener_clave_de_autenticacion")]
+        [HttpGet("{email}/obtener_clave_de_autenticacion")]
         public async Task<ActionResult<string?>> ObtenerClaveAutenticacion(string? email)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
