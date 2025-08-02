@@ -59,17 +59,33 @@ namespace WebApi.controllers
         }
 
         [Authorize]
-        [HttpPost("reiniciar_clave_de_autenticacion")]
-        public IActionResult ReiniciarClaveDeAutenticacion(ApplicationUser? userModel)
+        [HttpGet("reiniciar_clave_de_autenticacion")]
+        public async Task<IActionResult> ReiniciarClaveDeAutenticacion(string? email)
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(user))
                 return Unauthorized();
 
-            if (userModel == null)
+            if (string.IsNullOrEmpty(email))
                 return NotFound();
 
-            return Ok(_service.ReiniciarClaveDeAutenticacion(userModel));
+            await _service.ReiniciarClaveDeAutenticacion(email);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpGet("obtener_clave_de_autenticacion")]
+        public async Task<ActionResult<string?>> ObtenerClaveAutenticacion(string? email)
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(user))
+                return Unauthorized();
+
+            if (string.IsNullOrEmpty(email))
+                return NotFound();
+
+            return await _service.ObtenerClaveDeAutenticacionAsync(email);
         }
         #endregion
     }    
