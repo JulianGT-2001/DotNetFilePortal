@@ -69,6 +69,11 @@ namespace Core.UserCases
         {
             return await _repository.GetUserAsync(claim);
         }
+
+        public bool ReiniciarClaveDeAutenticacion(ApplicationUser user)
+        {
+            return _repository.ResetAuthenticatorKey(user);
+        }
         #endregion
     }
 }

@@ -29,6 +29,11 @@ namespace Infraestructure
             var user = await _userManager.GetUserAsync(claim);
             return user;
         }
+
+        public bool ResetAuthenticatorKey(ApplicationUser user)
+        {
+            return _userManager.ResetAuthenticatorKeyAsync(user).IsCompleted;
+        }
         #endregion
     }
 }
