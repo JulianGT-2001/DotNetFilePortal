@@ -11,5 +11,7 @@ namespace Core.Interfaces
         Task<ApplicationUser?> ObtenerUsuarioPorClaim(ClaimsPrincipal claim);
         Task ReiniciarClaveDeAutenticacion(string email);
         Task<string?> ObtenerClaveDeAutenticacionAsync(string email);
+        Task<bool> VerificarTokenDosFactoresAsync(string email, string code);
+        Task HabilitarDosFactoresAsync(string email, bool activate);
     }
 }

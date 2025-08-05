@@ -40,6 +40,16 @@ namespace Infraestructure
         {
             return await _userManager.GetAuthenticatorKeyAsync(user);
         }
+
+        public async Task<bool> VerifyTwoFactorTokenAsync(ApplicationUser user, string code)
+        {
+            return await _userManager.VerifyTwoFactorTokenAsync(user, _userManager.Options.Tokens.AuthenticatorTokenProvider, code);
+        }
+
+        public async Task SetTwoFactorEnabledAsync(ApplicationUser user, bool activate)
+        {
+            await _userManager.SetTwoFactorEnabledAsync(user, activate);
+        }
         #endregion
     }
 }

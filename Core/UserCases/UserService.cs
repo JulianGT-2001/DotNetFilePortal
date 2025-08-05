@@ -86,6 +86,23 @@ namespace Core.UserCases
                 return string.Empty;
             return await _repository.GetAuthenticatorKeyAsync(user);
         }
+
+        public async Task<bool> VerificarTokenDosFactoresAsync(string email, string code)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return false;
+            return await _repository.VerifyTwoFactorTokenAsync(user, code);
+        }
+
+        public async Task HabilitarDosFactoresAsync(string email, bool activate)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                await _repository.SetTwoFactorEnabledAsync(user, activate);
+            }
+        }
         #endregion
     }
 }

@@ -87,6 +87,36 @@ namespace WebApi.controllers
 
             return await _service.ObtenerClaveDeAutenticacionAsync(email);
         }
+
+        [Authorize]
+        [HttpGet("{email}/{code}/verificar_token")]
+        public async Task<IActionResult> VerificarTokenDosFactores(string? email, string code)
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(user))
+                return Unauthorized();
+
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(code))
+                return NotFound();
+
+            return Ok(await _service.VerificarTokenDosFactoresAsync(email, code));
+        }
+
+        [Authorize]
+        [HttpGet("{email}/{activate}/habilitar_doble_factor")]
+        public async Task<IActionResult> HabilitarDobleFactor(string? email, bool activate = true)
+        {
+            var user = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(user))
+                return Unauthorized();
+
+            if (string.IsNullOrEmpty(email))
+                return NotFound();
+
+            await _service.HabilitarDosFactoresAsync(email, activate);
+
+            return Ok();
+        }
         #endregion
     }    
 }

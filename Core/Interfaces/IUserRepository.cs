@@ -9,5 +9,7 @@ namespace Core.Interfaces
         Task<ApplicationUser?> GetUserAsync(ClaimsPrincipal claim);
         Task ResetAuthenticatorKey(ApplicationUser user);
         Task<string?> GetAuthenticatorKeyAsync(ApplicationUser user);
+        Task<bool> VerifyTwoFactorTokenAsync(ApplicationUser user, string code);
+        Task SetTwoFactorEnabledAsync(ApplicationUser user, bool activate);
     }
 }
